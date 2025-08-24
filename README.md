@@ -1,5 +1,4 @@
 # Trabalho-de-Programa-o
-Sistema bancário conforme as especificações do professor, feito por Vitor Dezem e Lucas Basse Pozzer
 TAXA_SAQUE = 2.50
 TAXA_DEPOSITO = 1.00
 TAXA_TRANSFER_PERC = 0.01
@@ -39,55 +38,6 @@ def formatar_dinheiro(valor):
 
 def registrar_transacao(conta, descricao):
     conta[4].append(descricao)
-
-def salvar_dados():
-    linhas = []
-    i = 0
-    while i < len(contas):
-        c = contas[i]
-        transacoes = ""
-        if len(c[4]) > 0:
-            transacoes = ";;".join(c[4])
-        linha = str(c[0]) + "|" + c[1].replace("|","/") + "|" + c[2].replace("|","/") + "|" + str(c[3]) + "|" + transacoes
-        linhas.append(linha)
-        i = i + 1
-    arq = open(ARQ_DADOS,"w",encoding="utf-8")
-    j = 0
-    while j < len(linhas):
-        arq.write(linhas[j])
-        arq.write(chr(10))
-        j = j + 1
-    arq.close()
-    print("Dados salvos em " + ARQ_DADOS)
-
-def carregar_dados():
-    global contas, proximo_numero
-    contas = []
-    maior_num = 1000
-    arq = open(ARQ_DADOS,"r",encoding="utf-8")
-    texto = arq.read()
-    arq.close()
-    linhas = texto.split(chr(10))
-    k = 0
-    while k < len(linhas):
-        linha = linhas[k].strip()
-        if linha != "":
-            partes = linha.split("|")
-            if len(partes) >= 5:
-                numero = int(partes[0])
-                nome = partes[1]
-                senha = partes[2]
-                saldo = float(partes[3])
-                trans_str = partes[4]
-                transacoes = []
-                if trans_str != "":
-                    transacoes = trans_str.split(";;")
-                contas.append([numero,nome,senha,saldo,transacoes])
-                if numero > maior_num:
-                    maior_num = numero
-        k = k + 1
-    proximo_numero = maior_num + 1
-    print("Dados carregados de " + ARQ_DADOS)
 
 def cadastrar_conta():
     global proximo_numero
@@ -259,8 +209,6 @@ def menu_principal():
         print("1) Cadastrar conta")
         print("2) Login")
         print("3) Listar saldos (Acesso somete por VL)")
-        print("4) Salvar dados")
-        print("5) Carregar dados")
         print("0) Sair")
         opcao = input("Escolha: ").strip()
         if opcao == "1":
@@ -271,10 +219,6 @@ def menu_principal():
                 menu_logado(c)
         elif opcao == "3":
             listar_saldos_auditoria()
-        elif opcao == "4":
-            salvar_dados()
-        elif opcao == "5":
-            carregar_dados()
         elif opcao == "0":
             print("Encerrando o sistema. Até mais!")
             sair = True
@@ -283,3 +227,4 @@ def menu_principal():
 
 if __name__ == "__main__":
     menu_principal()
+
